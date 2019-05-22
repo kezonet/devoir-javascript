@@ -1,0 +1,636 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<title>Projet de javascript - Dongyan ZOU</title>
+	<meta http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+	<script type="text/javascript" src="js/external.js"></script>
+	<script type="text/javascript" src="js/shCore.js"></script>
+	<script type="text/javascript" src="js/shBrushJScript.js"></script>
+	<script type="text/javascript" src="js/shBrushCss.js"></script>
+	<script type="text/javascript" src="js/shBrushXml.js"></script>
+	<script type="text/javascript" src="js/demineur.js"></script>
+	<link rel="stylesheet" type="text/css" href="images/style.css" />
+	<link type="text/css" rel="stylesheet" href="images/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="images/shThemeDefault.css"/>
+	<link type="text/css" rel="stylesheet" href="images/demineur/style.css"/>
+	<script type="text/javascript">
+		SyntaxHighlighter.config.clipboardSwf = 'images/clipboard.swf';
+		SyntaxHighlighter.all();
+	</script>
+</head>
+<body>
+	<div id="main">
+		<div id="head">
+			<a href="#"><img src="images/logo.gif" alt="logo" title="logo"/></a>
+			<div id="menu">
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="demineur.html" class="click">Démineur</a></li>
+					<li><a href="loupe.html">Loupe</a></li>
+					<li><a href="contact.html">Contact</a></li>
+				</ul>
+				<div id="menu_tips">&nbsp;</div>
+			</div>
+		</div>
+		<div id="body">
+			<div id="tools" class="round">
+				<ul>
+					<li><a href="demineur_demo.html">Exemple</a></li>
+					<li><a href="index.html#tutorial">Tutorial</a></li>
+					<li><a href="download/demineur.zip" rel="external">télécharger</a></li>
+				</ul>
+			</div>
+			<div id="contenu">
+			<h1>Démineur</h1>
+			<h2>Exemple simple</h2>
+			<div id="myDemineur"></div>
+			<script type="text/javascript">
+			window.addEventListener("load",function(){
+				myDemineur	= new Demineur({
+					renderto: document.getElementById("myDemineur"),
+					width	: 16,
+					height	: 8,
+					nombre	: 10,
+					onStart	: function(){alert("start")},
+					onWin	: function(time){alert("Win\n"+time)},
+					onFailed: function(time){alert("Failed\n"+time)},
+					onClick	: function(open,marque,error,rest){}
+				});
+				newGame(myDemineur);
+			},false);
+			</script>
+			<pre class="brush: javascript;">
+			<!--
+				myDemineur	= new Demineur({
+					renderto: document.getElementById("myDemineur"),
+					width	: 16,
+					height	: 8,
+					nombre	: 10,
+					onStart	: function(){alert("start")},
+					onWin	: function(time){alert("Win\n"+time)},
+					onFailed: function(time){alert("Failed\n"+time)},
+					onClick	: function(open,marque,error,rest){}
+				});
+				newGame(myDemineur);
+			-->
+			</pre>
+			<h2><a name="tutorial">tutorial</a></h2>
+			<h3>prépare et savoir</h3>
+			<p>
+			Tout d'abord, il faut savoir le théorie de crée un jeu. il peut séparer a 4 grande partie:
+			</p>
+			<ul>
+				<li>le paramètre de jeu</li>
+				<li>le traitement de data</li>
+				<li>le interface de jeu</li>
+				<li>gestion du événement</li>
+			</ul>
+			<h3>le paramètre de jeu</h3>
+			<p>Donc, tout d'abord on crée un objet de démineur, commence faire la partie paramètre de jeu</p>
+<pre class="brush: javascript;">
+<!--
+//un objet de demineur
+var Demineur=function(obj){
+	this.renderto	= obj.renderto||document.body;
+	//ou on afficher cette jeu (par défaut on l'afficher dans la balise body)
+	this.width		= 10;
+	//combien de case dans la horizontale (par défaut est 10)
+	this.height		= 10;
+	//combien de case dans la verticale (par défaut est 10)
+	this.nombre		= 10;
+	//combien de bombe dans le jeu (par défaut est 10)
+	this.onStart	= function(){}
+	//quand le jeu commence on fait quoi (par défaut est 10)
+	this.onClick	= function(){}
+	//quand on click le souri sur le case on fait quoi (par défaut est on fait rien)
+	this.onWin		= function(){}
+	//quand on réussi on fait quoi (par défaut est on fait rien)
+	this.onFailed	= function(){}
+	//quand on click le bombe on fait quoi (par défaut est on fait rien)
+	setting(obj,this);
+	//utilise la méthode setting pour changer les paramètres qu'on a décidés	
+}
+
+//appliquer les paramètres qu'on a décidé;
+//si on transférer les valeur pour change on le changera sinon on le reste par défaut
+function setting(obj,scope){
+	scope.width		= obj.width||scope.width;	
+	scope.height	= obj.height||scope.height;
+	scope.nombre	= obj.nombre||scope.nombre;
+	scope.onStart	= obj.onStart||scope.onStart;
+	scope.onClick	= obj.onClick||scope.onClick;
+	scope.onWin		= obj.onWin||scope.onWin;
+	scope.onFailed	= obj.onFailed||scope.onFailed;
+}
+-->
+</pre>
+			<h3>le traitement de data</h3>
+			<p>Après les paramètre de jeu, c’est le processus de traiter les datas, j’ai le séparé à 4 méthode</p>
+			<ol>
+				<li>prépare des informations de base pour le démineur</li>
+				<li>crée les datas de cases de normaux et de cases de bombes</li>
+				<li>mélanger les cases de normaux et les cases de bombes</li>
+				<li>calculer combien de bombe autour chaque case</li>
+			</ol>
+<pre class="brush: javascript;">
+<!--
+//le variable scope représente la objet de démineur qu'on va traiter
+
+//prépare les information de base de démineur
+function data_init(scope){
+	scope.error		= 0;		//combien de case normal qu'on a marque comme une bombe
+	scope.numMarque	= 0;		//combien de case qu'on a marque
+	scope.numOpen	= 0;		//combien de case qu'on a ouvrir
+	scope.isStart	= false;	//Cette jeu a commencé ou pas
+	scope.isOver	= false;	//Cette jeu a terminé ou pas
+	scope.waitOpen	= [];		//une liste de case qui attendre ouvrir
+	scope.tout		= scope.width*scope.height-scope.nombre;
+	//Calculer il y a combien de case normal dans ce jeu
+}
+
+//crée les datas de cases
+function data_creatBox(scope){
+	scope.box	= [];	
+	//on définit un attribut du objet scope pour stocker les cases
+	var number	= 0;	
+	//Cette chiffre est pour calculer combien de case de bombe qu'on a créé
+	
+	for (var h=0;h<scope.height+2;h++){
+	//Ici,crée une case autour du table qu'on veut, c'est pour facilement calculer la nombre de voisine de chaque case même si la case situe au bord de la table.
+		scope.box[h] = [];
+		for (var w=0;w<scope.width+2;w++){
+			scope.box[h][w]={voisine:0,bomb:false,cache:true,marque:false}		
+			/* on définir chaque case comme un objet qui a 4 attribut:
+			voisin:	nombre de voisin
+			bomb:	c'est une case normal ou case bombe
+			cache:	on le ouvrir ou pas
+			marque: on le marque comme une bombe ou pas
+			*/
+			if ((h!=0)&&(h!=scope.height+1)&&(w!=0)&&(w!=scope.width+1)&&(number<scope.nombre)){
+				//Si on n'a pas encore crée nombre de case bombe, cette case est devenu case bombe
+				scope.box[h][w].bomb = true;	//Il se transformer une case bombe
+				number++;						//ajouter un
+			}
+		}
+	}
+}
+
+//confondre les cases
+function data_confusion(scope){
+	//les deux circle sont utilisé parcourir les cases
+	for (var h=1;h<=scope.height;h++){
+		for (var w=1;w<=scope.width;w++){
+			var toH=Math.ceil(Math.random()*(scope.height-1)+1);
+			//obtenir un chiffre aléatoire
+			var toW=Math.ceil(Math.random()*(scope.width-1)+1);
+			//obtenir un chiffre aléatoire
+			var tmp=scope.box[h][w].bomb;			
+			//un variable pour stocker la case aléatoire pour on changer la type de case entre deux cases
+			if((tmp&&!scope.box[toH][toW].bomb)||(!tmp&&scope.box[toH][toW].bomb)){
+			//si les deux cases une est case normal et l'autre est case bombe, on les changer type entre eux
+				scope.box[h][w].bomb=scope.box[toH][toW].bomb;
+				scope.box[toH][toW].bomb=tmp;
+			}
+		}
+	}
+}
+
+
+//calculer la nombre du voisine de chaque case
+function data_voisines(scope){
+	//parcourir la table de case
+	for (var h=1;h<=scope.height;h++){
+		for (var w=1;w<=scope.width;w++){
+			if(scope.box[h][w].bomb){
+			//si cette case est une bombe, on va traiter
+				//l'attribut voisine de tous les voisines de cette case bombe ajouter un
+				scope.box[h-1][w-1].voisine++;	
+				scope.box[h-1][w].voisine++;
+				scope.box[h-1][w+1].voisine++;
+				scope.box[h][w-1].voisine++;
+				scope.box[h][w+1].voisine++;
+				scope.box[h+1][w-1].voisine++;
+				scope.box[h+1][w].voisine++;
+				scope.box[h+1][w+1].voisine++;
+			}
+		}
+	}
+}
+-->
+</pre>
+		<p>la méthode creatBox est utilisé pour crée les case. Chaque case est compose:</p>
+		<pre class="brush: javascript;">
+		{
+			voisine	: 0,			//nombre de voisin
+			bomb	: false,		//c'est une case normal ou case bombe
+			cache	: true,			//on le ouvrir ou pas
+			marque	: false			//on le marque comme une bombe ou pas
+		}
+		</pre>
+		<p>
+		La méthode confusion est utilisée pour mélanger les cases de bombe et les cases de normaux.
+		La méthode voisine est utilisée pour calculer le nombre de voisin de bombe de chaque case.
+		</p>
+		
+		<h3>le interface de jeu</h3>
+		<p>
+			Ici, pour créer un jeu démineur simplement. Seulement utiliser un tableau, chaque case de table est une case de démineur, c'est plus pratique.
+		</p>
+	<pre class="brush: javascript;">
+<!--
+//le tableau de démineur
+function view_table(scope){
+	scope.td=[];		//on définit un attribut du objet scope pour stocker les interface de case
+	var table = document.createElement("table");
+	var tbody = document.createElement("tbody");
+	table.appendChild(tbody);
+	for (var h=1;h<=scope.height;h++){
+		scope.td[h]=[];
+		var tr = document.createElement("tr");
+		for (var w=1;w<=scope.width;w++){
+			var td = document.createElement("td");
+			td.setAttribute("h",h);
+			td.setAttribute("w",w);
+			scope.td[h][w]=td;
+			tr.appendChild(td);
+		}
+		tbody.appendChild(tr);
+	}
+	scope.renderto.innerHTML='';
+	scope.renderto.appendChild(table);		//afficher l'interface dans le endroit où on a indiqué
+	table.style.width=scope.width*29+"px";
+}
+--></pre>
+		<h3>interactive d'interface</h3>
+		<p>le gestion du événement est une liaison entre le traitement de data et le interface de jeu. Donc ici, on droit ajouter une ligne de code dans la fin de méthode view_table, pour gérer la événement de souris.</p>
+<pre class="brush: javascript;">
+<!--
+//le tableau de view
+function view_table(scope){
+	scope.td=[];		//on définit un attribut du objet scope pour stocker les interface de case
+	var table = document.createElement("table");
+	table.setAttribute('class','demineur');
+	var tbody = document.createElement("tbody");
+	table.appendChild(tbody);
+	for (var h=1;h<=scope.height;h++){
+		scope.td[h]=[];
+		var tr = document.createElement("tr");
+		for (var w=1;w<=scope.width;w++){
+			var td = document.createElement("td");
+			td.setAttribute("h",h);
+			td.setAttribute("w",w);
+			scope.td[h][w]=td;
+			tr.appendChild(td);
+		}
+		tbody.appendChild(tr);
+	}
+	scope.renderto.innerHTML='';
+	scope.renderto.appendChild(table);		//afficher l'interface dans le endroit où on a indiqué
+	table.style.width=scope.width*29+"px";
+	table.addEventListener("mousedown",bind(event_clickBox,scope),false);
+	//ajouter un méthode pour traiter le click de la souris
+	table.addEventListener("contextmenu",function(e){e.stopPropagation()},false);
+	//quand on click droit sur ce tableau on n'afficher rien de menu de navigateur
+}
+
+//Cette méthode est utilisé pour changer un scope de fonction
+function bind(fn,scope){
+	return function(){
+		fn.apply(scope,arguments);
+	}
+}
+--></pre>
+		<p>Maintenant quand on click souris sur la table de démineur, il va call la méthode event_clickBox</p>
+		<p>table.addEventListener("contextmenu",function(e){e.stopPropagation()},false); Annuler d'affiche le menu quand on clic droit de la souris sur cette table</p>
+		
+		<h3>gestion du événement</h3>
+<pre class="brush: javascript;">
+<!--
+//traiter le click de souris
+function event_clickBox(e){
+	if(this.isOver){return}						//si le jeu est déjà terminé, on arrêt
+	if(!this.isStart){on_Start(this)}
+	//si le jeu pas commence, call la methode on_Start pour lancer un événement de demineur
+	var h=parseInt(e.target.getAttribute("h"));
+	var w=parseInt(e.target.getAttribute("w"));
+	//les deux ligne pour savoir le utilisateur a click quelle case
+	if(!this.box[h][w].cache){return}			//si la case est déjà ouvrir, on arrêt
+	if(e.button==2){							//click droit
+		control_marque(h,w,this);				//call la methode control_marque
+	}else{										//click gauche
+		if(!this.box[h][w].marque){				//si on n'a pas marqué
+			control_openBox(h,w,this);			//call la methode control_openbox
+		}
+	}
+	//call la methode on_Click pour lancer un événement de demineur
+	on_Click(this)
+}
+-->
+</pre>
+		<p>
+		Cette méthode est marcher comme ça
+		</p>
+		<ol>
+			<li>détecter ce jeu terminé ou pas.si oui, retour</li>
+			<li>détecter ce jeu commence ou pas.si non, call la méthode on_Start comme un événement de démineur est commencé</li>
+			<li>selon les attributs de case de tableau, on obtenir la data de case de démineur</li>
+			<li>détecter on click droit ou gauche
+				<ul>
+					<li>click droit: call la méthode control_marque pour marquée ou démarquer la case</li>
+					<li>click gauche: détecter le case on peut le ouvrir ou pas, si oui call la méthode control_openBox</li>
+				</ul>
+			</li>
+			<li>la ligne de fin de la méthode, sa fonction est lancer un événement de démineur est appuyé</li>
+		</ol>
+
+		<h3>traitement du événement</h3>
+		<p>
+			C’est une série de méthode pour traite le événement
+		</p>
+<pre class="brush: javascript;"><!--
+//marque une case
+function control_marque(h,w,scope){
+	if(scope.box[h][w].cache){				//si la case indiqué ne pas ouvrir on le marcher
+		if(!scope.box[h][w].marque){		//si la case ne pas marqué on la marque
+			scope.box[h][w].marque=true;
+			scope.td[h][w].setAttribute("class","marque");
+			scope.numMarque++;
+			if(!scope.box[h][w].bomb){
+				scope.error++;
+			}
+		}else{				//si la case marqué on la démarqué
+			scope.box[h][w].marque=false;
+			scope.td[h][w].setAttribute("class","");
+			scope.numMarque=scope.numMarque-1;
+			if(!scope.box[h][w].bomb){
+				scope.error=scope.error-1;
+			}
+		}
+	}
+}
+
+//ouvrir les cases ce qui est dans la liste de ouvrir
+function control_openBox(h,w,scope){
+	if(scope.box[h][w].bomb){on_Failed(h,w,scope);return}
+	control_creatOpenList(h,w,scope);
+	//call la methode control_creatOpenList pour prépare la liste de ouvrir
+	var h,w;
+	//parcourir la liste de ouvrir et ouvrir toutes les case qu'on a notée dans la liste
+	for (var i=0; i<scope.waitOpen.length; i++ ){
+		h=scope.waitOpen[i][0];
+		w=scope.waitOpen[i][1];
+		scope.td[h][w].setAttribute("class","vide"+scope.box[h][w].voisine);
+	}
+	scope.numOpen	+= scope.waitOpen.length;		//reindique la chiffre de case ouvrir
+	scope.waitOpen	= [];							//vider la liste de ouvrir
+	if(scope.numOpen==scope.tout){
+		on_Win(scope);
+		//si le nombre de case ouvrir autant du nombre de case normal, call la méthode on_Win
+	}
+}
+
+//préparer la liste pour ouvrir selon attribut voisin
+function control_creatOpenList(h,w,scope){
+	if(scope.box[h][w].cache&&!scope.box[h][w].marque){
+	//si la case n'avait pas ouvrir et n'avait pas marque comme une bombe
+		scope.waitOpen.push([h,w]);			//on la ajouter dans la liste de ouvrir
+		scope.box[h][w].cache=false;		//on la marque comme déjà ouvrir
+		if(scope.box[h][w].voisine==0){		//si il y n'a pas de case bombe autour, marcher ça
+			if (h>1 && w>1) control_creatOpenList(h-1,w-1,scope);
+			if (h<scope.height && w<scope.width) control_creatOpenList(h+1,w+1,scope);
+			if (h>1) control_creatOpenList(h-1,w,scope);
+			if (w>1) control_creatOpenList(h,w-1,scope);
+			if (h<scope.height) control_creatOpenList(h+1,w,scope);
+			if (w<scope.width) control_creatOpenList(h,w+1,scope);
+			if (h>1 && w<scope.width) control_creatOpenList(h-1,w+1,scope);
+			if (h<scope.height && w>1) control_creatOpenList(h+1,w-1,scope);
+		}
+	}
+}
+-->
+	</pre>
+
+		<h3>relance les événements</h3>
+		<p>
+			ces mécanismes sont pour étendre la capacité de réutilisé. Lancer des événements de démineur au développeur
+		</p>
+	<pre class="brush: javascript;">
+<!--
+//il marche quand le jeu commence
+function on_Start(scope){
+	scope.start_time= new Date();	//obtenir un temps
+	scope.isStart	= true;			//marque ce jeu est commencé
+	scope.onStart();				//call la méthode onstart de objet demineur q'on a prévue
+}
+
+function on_Click(scope){
+	//call la méthode de onclick de objet demineur q'on a prévue
+	if(!scope.isOver){
+		scope.onClick(scope.numOpen,scope.numMarque,scope.error,scope.nombre-scope.numMarque)
+	}
+}
+
+//il marche quand on click une bombe
+function on_Failed(h,w,scope){
+	control_end(scope);		//call la méthode control_end
+	//parcourir la table de case
+	for (var fh=1;fh<=scope.height;fh++){
+		for (var fw=1;fw<=scope.width;fw++){
+			if(scope.box[fh][fw].bomb&&!scope.box[fh][fw].marque){
+				scope.td[fh][fw].setAttribute("class","bombe");
+				//toutes les cases de bombes affichent
+			}else if(scope.box[fh][fw].marque&&!scope.box[fh][fw].bomb){
+				scope.td[fh][fw].setAttribute("class","erreur");
+				//afficher les fautes cases
+			}
+		}
+	}
+	scope.td[h][w].setAttribute("class","boum");
+	//la case qu'on a pressé afficher une images de exploseur
+	scope.onFailed(scope.time);
+	// Call la méthode onfailed de objet demineur q'on a prévue
+}
+
+//il marche quand on réussir le jeu
+function on_Win(scope){
+	control_end(scope);		//call la méthode control_end
+	//parcourir la table de case
+	for (var h=1;h<=scope.height;h++){
+		for (var w=1;w<=scope.width;w++){
+			if(scope.box[h][w].bomb){
+				scope.td[h][w].setAttribute("class","marque");
+				//marquer toutes les cases de bombe
+			}else{
+				scope.td[h][w].setAttribute("class","vide"+scope.box[h][w].voisine);
+				//ouvrir tous les cases de normal
+			}
+		}
+	}
+	scope.onWin(scope.time);
+	// Call la méthode onWin de objet demineur q'on a prévue
+}
+
+//il marche quand le jeu termine
+function control_end(scope){
+	var end_time= new Date();		//obtenir un temps
+	scope.time	= parseInt(parseInt(end_time - scope.start_time)/1000);
+	//calculer on a utilisé combien de temps
+	scope.isOver= true;				//marque ce jeu est terminé
+}
+-->
+	</pre>
+	<h3>jouer le jeu</h3>
+		<p>
+		Maintenant,le jeu est déjà marche, on prépare trois fichier
+		</p>
+		<ol>
+			<li>un fichier de javascript qui compose les code au-dessus</li>
+			<li>un fichier de css
+	<pre class="brush:css;">
+table.demineur{
+	border-collapse:collapse
+}
+table.demineur td{
+	width:27px;
+	height:28px;
+	border:1px dotted #333;
+	background:#555 url("cache.png") no-repeat -1px -1px;
+}
+table.demineur td.bombe {
+	background:url("bombe.png");
+}
+table.demineur td.boum {
+	background:url("boum.png");
+}
+table.demineur td.erreur {
+	background:url("erreur.png");
+}
+table.demineur td.marque {
+	background:#555 url("marque.png") no-repeat -1px -1px;
+}
+table.demineur td.vide0 {
+	background:url("vide.png");
+}
+table.demineur td.vide1 {
+	background:url("un.png");
+}
+table.demineur td.vide2 {
+	background:url("deux.png");
+}
+table.demineur td.vide3 {
+	background:url("trois.png");
+}
+table.demineur td.vide4 {
+	background:url("quatre.png");
+}
+table.demineur td.vide5 {
+	background:url("cinq.png");
+}
+table.demineur td.vide6 {
+	background:url("six.png");
+}
+table.demineur td.vide7 {
+	background:url("sept.png");
+}
+table.demineur td.vide8 {
+	background:url("huit.png");
+}
+</pre>	</li>
+			<li>un fichier de html
+<pre class="brush:html;"><!--
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+	<head>
+		<title>Demineur</title>
+		<meta http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="demineur/style.css" />
+		<script type='text/javascript' src="demineur.js"></script>
+	</head>	
+	<body>
+  	</body>
+</html>
+--></pre>
+		<p>
+		On doit ajouter le code dessous dans le fichier de HTML comme une partie de javascript.
+		</p>
+	<pre class="brush: javascript;">
+<!--
+myDemineur	= new Demineur({
+	width	: 16,
+	height	: 8,
+	nombre	: 10,
+	onStart	: function(){alert("start")},
+	onWin	: function(time){alert("Win\n"+time)},
+	onFailed: function(time){alert("Failed\n"+time)},
+	onClick	: function(open,marque,error,rest){}
+});
+data_init(myDemineur);
+data_creatBox(myDemineur);
+data_confusion(myDemineur);
+data_voisines(myDemineur);
+view_table(myDemineur);	
+--></pre>
+		<p>mais c'est pas simple pour réutilisé, donc on le modifier un peu, ajouter ça dans la fichier de javascript.</p>
+<pre class="brush: javascript;">
+function newGame(obj){
+	data_init(obj);
+	data_creatBox(obj);
+	data_confusion(obj);
+	data_voisines(obj);
+	view_table(obj);
+}
+</pre>
+		<p>
+		Enfin, le code de fichier HTML est comme ça
+		</p>
+<pre class="brush:html;"><!--
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+	<head>
+		<title>Demineur</title>
+		<meta http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="demineur/style.css" />
+		<script type='text/javascript' src="demineur.js"></script>
+		<script type="text/javascript">
+		myDemineur	= new Demineur({
+			width	: 16,
+			height	: 8,
+			nombre	: 10,
+			onStart	: function(){alert("start")},
+			onWin	: function(time){alert("Win\n"+time)},
+			onFailed: function(time){alert("Failed\n"+time)},
+			onClick	: function(open,marque,error,rest){}
+		});
+		newGame(myDemineur);
+		</script>
+	</head>	
+	<body>
+	</body>
+</html>
+--></pre>
+
+	</li>
+		</ol>
+
+
+
+
+
+
+
+
+
+	<h3>Améliorer</h3>
+	<p>Vous pouvez voir <a href="demineur_demo.html">le exemple</a> ou <a href="download/demineur.zip" rel="external">télécharger</a> tous les code. Et puis on peut essayer utiliser prototype de objet écrire le jeu démineur, click ici pour le <a href="download/demineur_prototype.zip" rel="external">télécharger</a></p>
+		</div>
+		</div>
+		<div id="foot">
+		<p>
+		<a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+		</p>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+*{padding:0;margin:0;}
+body{
+	background:#ccc;
+	font-size:0.75em;
+	background:#63BAD8 url("bg.jpg") repeat-x scroll 50% 0;
+	font-family:'Lucida Grande',lucida,helvetica,arial,sans-serif;
+}
+img{
+	border:0;
+}
+p{
+	text-align:justify;
+	text-indent: 2em;
+	margin:10px 0;
+}
+#main{
+	background:#FFF;
+	width:860px;
+	margin:20px auto;
+}
+#head{
+	padding:20px 10px 0;
+}
+	#menu{
+		margin:20px -10px 10px -28px;
+	}
+	#menu ul{
+		list-style-type:none;
+		padding-left:28px;
+		height:50px;
+		background:#424242;
+	}
+	#menu li{
+		width:150px;
+		float:left;
+		text-align:center;
+	}
+	#menu li a{
+		color:#FFF;
+		text-decoration:none;
+		display:block;
+		padding:0 15px;
+		height:36px;
+		margin:6px 3px;
+		background:#adadad;
+		font-size:1.6em;
+		line-height:36px;
+		border:1px solid #333;
+	}
+	#menu li a.click{
+		background:#cc1818;
+	}
+	#menu li a:hover{
+		background:#3da1e7;
+	}
+	#menu #menu_tips{clear:left;
+		float:left;
+		width:18px;
+		height:18px;
+		background:url("menu_tips.png") no-repeat;
+	}
+#body{
+	padding:5px 40px;
+}
+	#tools{
+		font-size:1.2em;
+		line-height:1.8em;
+		border:1px solid #cc1818;
+		width:160px;
+		float:right;
+		z-index:999;
+		margin:10px;
+		padding:1px;
+	}
+	#tools ul{
+		list-style-type:none;
+	}
+	#tools a{
+		display:block;
+		text-decoration:none;
+		color:#2276BB;
+		padding:2px 10px;
+	}
+	#tools a:hover{background:#efefef;}
+	#contenu h1{
+		font-family:Helvetica,Arial,Sans-Serif;
+		font-size:1.8em;
+		color:#cc1818;
+		text-align:right;
+	}
+	#contenu h2{
+		font-family:Helvetica,Arial,Sans-Serif;
+		font-size:1.8em;
+		margin:10px 0;
+		color:#2276BB;
+	}
+	#contenu h3{
+		font-family:Helvetica,Arial,Sans-Serif;
+		font-size:1.2em;
+		margin:5px 0;
+		color:#2276BB;
+	}
+	#contenu li{
+		margin-left:40px;
+	}
+	#body dl{font-size:1.4em}
+	#body dt{float:left;width:80px;height:20px}
+	#body dd{height:20px}
+#foot{
+	margin:10px;
+	border-top:1px solid #ccc;
+	height:60px;
+	background:url("foot.gif") no-repeat;
+}
+#foot p{
+	text-align:right;
+}
+
+
+#saolei_menu{
+	overflow:hidden;
+}
+#saolei_lei{
+	width:100px;display:block;float:left;text-align:center;
+}
+#saolei_new{
+	float:left;
+}
+#saolei_time{
+	width:100px;display:block;float:left;text-align:center;
+}

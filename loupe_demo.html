@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<title>Projet de javascript - Dongyan ZOU</title>
+	<meta http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+	<script type="text/javascript" src="js/external.js"></script>
+	<script type="text/javascript" src="js/shCore.js"></script>
+	<script type="text/javascript" src="js/shBrushJScript.js"></script>
+	<script type="text/javascript" src="js/loupe.js"></script>
+	<link rel="stylesheet" type="text/css" href="images/style.css" />
+	<link type="text/css" rel="stylesheet" href="images/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="images/shThemeDefault.css"/>
+	<link type="text/css" rel="stylesheet" href="images/loupe/style.css"/>
+	<script type="text/javascript">
+		SyntaxHighlighter.config.clipboardSwf = 'images/clipboard.swf';
+		SyntaxHighlighter.all();
+	</script>
+</head>
+<body>
+	<div id="main">
+		<div id="head">
+			<a href="#"><img src="images/logo.gif" alt="logo" title="logo"/></a>
+			<div id="menu">
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="demineur.html">Demineur</a></li>
+					<li><a href="loupe.html" class="click">Loupe</a></li>
+					<li><a href="contact.html">Contact</a></li>
+				</ul>
+				<div id="menu_tips">&nbsp;</div>
+			</div>
+		</div>
+		<div id="body">
+			<div id="tools" class="round">
+				<ul>
+					<li><a href="loupe_demo.html">Exemple</a></li>
+					<li><a href="loupe.html#tutorial">Tutorial</a></li>
+					<li><a href="download/loupe.zip" rel="external">télécharger</a></li>
+				</ul>
+			</div>
+			<div id="contenu">
+			<div id="grand" style="height:288px;width:480px"><div id="petit" style="border:1px solid #fff"></div></div>
+			<script type="text/javascript">
+			attache(window,"load",function(){
+				var myLoupe	= new Loupe({
+					fois	: 10,
+					small	: "petit",
+					big		: "grand",
+					img_s	: "images/loupe/petit_10.jpg",
+					img_b	: "images/loupe/grand.jpg",
+					auto	: true
+				});
+			});
+			</script>
+			<pre class="brush: javascript;">
+			<!--
+			//<div id="grand" style="height:288px;width:480px"><div id="petit" style="border:1px solid #fff"></div></div>
+			var myLoupe	= new Loupe({
+				fois	: 10,
+				small	: "petit",
+				big		: "grand",
+				img_s	: "images/loupe/petit_10.jpg",
+				img_b	: "images/loupe/grand.jpg",
+				auto	: true
+			});
+			-->
+			</pre>
+
+			
+			<div id="petit1" style="border:1px solid #fff"></div><div id="grand1" style="height:200px;width:400px"></div>
+			<script type="text/javascript">
+			attache(window,"load",function(){
+				var myLoupe1	= new Loupe({
+					fois	: 10,
+					small	: "petit1",
+					big		: "grand1",
+					img_s	: "images/loupe/petit_10.jpg",
+					img_b	: "images/loupe/grand.jpg"
+				});
+			});
+			</script>
+			<pre class="brush: javascript;">
+			<!--
+			//<div id="petit1" style="border:1px solid #fff"></div><div id="grand1" style="height:200px;width:400px"></div>
+			var myLoupe1	= new Loupe({
+				fois	: 10,
+				small	: "petit1",
+				big		: "grand1",
+				img_s	: "images/loupe/petit_10.jpg",
+				img_b	: "images/loupe/grand.jpg"
+			});
+			-->
+			</pre>
+			
+			<div id="petit2" style="border:1px solid #fff"></div><div id="grand2" style="height:200px;width:400px"></div>
+			<script type="text/javascript">
+			attache(window,"load",function(){
+				var myLoupe2	= new Loupe({
+					fois	: 5,
+					small	: "petit2",
+					big		: "grand2",
+					img_s	: "images/loupe/petit_5.jpg",
+					img_b	: "images/loupe/grand.jpg"
+				});
+			});
+			</script>
+			<pre class="brush: javascript;">
+			<!--
+			//<div id="petit2" style="border:1px solid #fff"></div><div id="grand2" style="height:200px;width:400px"></div>
+			var myLoupe2	= new Loupe({
+				fois	: 5,
+				small	: "petit2",
+				big		: "grand2",
+				img_s	: "images/loupe/petit_5.jpg",
+				img_b	: "images/loupe/grand.jpg"
+			});
+			-->
+			</pre>
+			
+			<div id="petit3" style="border:1px solid #fff"></div><div id="grand3" style="height:200px;width:200px"></div>
+			<script type="text/javascript">
+			attache(window,"load",function(){
+				var myLoupe3	= new Loupe({
+					fois	: 2,
+					small	: "petit3",
+					big		: "grand3",
+					img_s	: "images/loupe/petit_2.jpg",
+					img_b	: "images/loupe/grand.jpg"
+				});
+			});
+			</script>
+			<pre class="brush: javascript;">
+			<!--
+			//<div id="petit3" style="border:1px solid #fff"></div><div id="grand3" style="height:200px;width:200px"></div>
+			var myLoupe3	= new Loupe({
+				fois	: 2,
+				small	: "petit3",
+				big		: "grand3",
+				img_s	: "images/loupe/petit_2.jpg",
+				img_b	: "images/loupe/grand.jpg"
+			});
+			-->
+			</pre>
+		</div>
+		</div>
+		<div id="foot">
+		<p>
+		<a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+		</p>
+		</div>
+	</div>
+</body>
+</html> 

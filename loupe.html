@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<title>Projet de javascript - Dongyan ZOU</title>
+	<meta http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+	<script type="text/javascript" src="js/external.js"></script>
+	<script type="text/javascript" src="js/shCore.js"></script>
+	<script type="text/javascript" src="js/shBrushJScript.js"></script>
+	<script type="text/javascript" src="js/shBrushCss.js"></script>
+	<script type="text/javascript" src="js/shBrushXml.js"></script>
+	<script type="text/javascript" src="js/loupe.js"></script>
+	<link rel="stylesheet" type="text/css" href="images/style.css" />
+	<link type="text/css" rel="stylesheet" href="images/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="images/shThemeDefault.css"/>
+	<link type="text/css" rel="stylesheet" href="images/loupe/style.css"/>
+	<script type="text/javascript">
+		SyntaxHighlighter.config.clipboardSwf = 'images/clipboard.swf';
+		SyntaxHighlighter.all();
+	</script>
+</head>
+<body>
+	<div id="main">
+		<div id="head">
+			<a href="#"><img src="images/logo.gif" alt="logo" title="logo"/></a>
+			<div id="menu">
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="demineur.html">Demineur</a></li>
+					<li><a href="loupe.html" class="click">Loupe</a></li>
+					<li><a href="contact.html">Contact</a></li>
+				</ul>
+				<div id="menu_tips">&nbsp;</div>
+			</div>
+		</div>
+		<div id="body">
+			<div id="tools" class="round">
+				<ul>
+					<li><a href="loupe_demo.html">Exemple</a></li>
+					<li><a href="#tutorial">Tutorial</a></li>
+					<li><a href="download/loupe.zip" rel="external">télécharger</a></li>
+				</ul>
+			</div>
+			<div id="contenu">
+			<h1>Loupe</h1>
+			<h2>Exemple simple</h2>
+			<div id="grand" style="height:288px;width:480px"><div id="petit" style="border:1px solid #fff"></div></div>
+			<script type="text/javascript">
+			attache(window,"load",function(){
+				var myLoupe	= new Loupe({
+					fois	: 10,
+					small	: "petit",
+					big		: "grand",
+					img_s	: "images/loupe/petit_10.jpg",
+					img_b	: "images/loupe/grand.jpg",
+					auto	: true
+				});
+			});
+			</script>
+			<pre class="brush: javascript;">
+			<!--
+			var myLoupe	= new Loupe({
+				fois	: 10,
+				small	: "petit",
+				big		: "grand",
+				img_s	: "images/loupe/petit_10.jpg",
+				img_b	: "images/loupe/grand.jpg",
+				auto	: true
+			});
+			-->
+			</pre>
+			<h2><a name="tutorial">tutorial</a></h2>
+			<h3>Prépare et savoir</h3>
+			<p>Il faut prépare deux images à différent taille. Affiche ces deux images dans les deux blocs indiqués. Crée un bloc dans le petit bloc au dessus de l'image. Enfin, calculer la x et y de ce nouveau bloc, déplace la fond d'image du grand bloc à correspondance x et y.
+			</p>
+			<h3>paramètre de loupe</h3>
+<pre class="brush: javascript;">
+<!--
+function Loupe(obj){
+	this.small	= obj.small	|| "loupe_small",		//où se trouve la petite image
+	this.big	= obj.big	|| "loupe_big",			//où se trouve la grande image
+	this.img_s	= obj.img_s	|| "loupe/petit.jpg",	//l'adresse de la petite image
+	this.img_b	= obj.img_b	|| "loupe/grand.jpg",	//l'adresse de la grande image
+	this.mclass	= obj.mclass|| "loup_move",			//la style de le bloc mobile pour déplacé
+	this.dd		= obj.dd	|| "right",				
+	//si le petit bloc dans le grand bloc, il se trouve à droite ou à gauche
+	this.auto	= obj.auto	|| false,				
+	//si le petit bloc dans le grand bloc, il peut change la côté automatiquement
+	this.fois	= obj.fois	|| 2					//le multiple
+	loupe_init(this);		//call la méthode loupe_init pour crée l'interface de cette loupe
+}
+--></pre>
+			<h3>l'interface de loup</h3>
+<pre class="brush: javascript;">
+<!--
+//la variable represent la objet loupe qu'on va traiter
+function loupe_init(scope){
+	scope.s	= {obj:document.getElementById(scope.small),img:document.createElement("img")}
+	//scope.s.obj représente le petit bloc
+	//scope.s.s représente l'image du petit bloc, ici on utilisé ça pour obtenir la dimension de cette image
+	scope.b	= {obj:document.getElementById(scope.big)}
+	//scope.b.obj représente le grand bloc
+	scope.m	= {obj:document.createElement("div")}
+	//scope.m.obj représente le bloc mobile
+
+	scope.s.img.setAttribute("src",scope.img_s);
+	scope.s.obj.appendChild(scope.s.img);
+	//place l'image qu'on a crée tout à l'heure dans le petit bloc
+	scope.s.obj.appendChild(scope.m.obj);
+	//place le bloc mobile dans le petit bloc
+	scope.s.obj.style.position	= 'relative';
+	if(scope.auto){
+		scope.s.obj.style.cssFloat	= scope.dd;
+		scope.s.obj.style.styleFloat	= scope.dd;
+	}
+	
+	scope.b.width	= parseInt(scope.b.obj.style.width);		//obtenir la largeur du grand bloc
+	scope.b.height	= parseInt(scope.b.obj.style.height);		//obtenir le haut du grand bloc
+	scope.b.obj.style.backgroundImage	= "URL("+scope.img_b+")";
+	//installer le fond d'image du grand bloc
+	scope.b.obj.style.backgroundPosition = '0px 0px';
+
+	scope.m.obj.setAttribute("class",scope.mclass);		//ajouter la style dans le bloc mobile
+	scope.m.obj.setAttribute("className",scope.mclass);	//ajouter la style dans le bloc mobile(IE)
+	scope.m.width			= scope.b.width/scope.fois;
+	//selon la largeur du grand bloc et le multiple calculer la largeur
+	scope.m.height			= scope.b.height/scope.fois;
+	//selon le haut du grand bloc et le multiple calculer le haut
+	scope.m.obj.style.width	= scope.m.width+'px';
+	scope.m.obj.style.height= scope.m.height+'px';
+	scope.m.obj.style.zIndex= '1000';
+	scope.m.obj.style.left	= '0px';
+	scope.m.obj.style.top	= '0px';
+	scope.m.obj.style.position	= 'absolute';
+	
+	loupe_bind(event_img_onload,scope)();
+	//call la méthode event_img_onload pour installer la dimension de la petit bloc
+	try{
+	//ici, on utilise try{}catch(e){} pour essayer ajouter la fonction de collection événement
+	//la fonction addEventListener ne marcher pas sur IE, et la fonction attachEvent ne marcher que sur IE
+		scope.s.img.addEventListener("load",loupe_bind(event_img_onload,scope),false);
+		scope.s.obj.addEventListener("mousedown",loupe_bind(event_m_mousedown,scope),false);
+		scope.s.obj.addEventListener("mousemove",loupe_bind(event_m_mousemove,scope),false);
+		scope.s.obj.addEventListener("mouseup",loupe_bind(event_m_mouseup,scope),false);
+	}catch(e){
+		scope.s.img.attachEvent("onload",loupe_bind(event_img_onload,scope));
+		scope.s.obj.attachEvent("onmousedown",loupe_bind(event_m_mousedown,scope));
+		scope.s.obj.attachEvent("onmousemove",loupe_bind(event_m_mousemove,scope));
+		scope.s.obj.attachEvent("onmouseup",loupe_bind(event_m_mouseup,scope));
+	}
+}
+
+//Cette méthode est utilisé pour changer un scope de fonction 
+function loupe_bind(fn,scope){
+	return function(){
+		fn.apply(scope,arguments);
+	}
+}
+--></pre>
+		<h3>gestion du événement</h3>
+<pre class="brush: javascript;">
+<!--
+//Cette méthode est utilisé pour calculer la dimension du petit bloc, après transformer l'image à la fond de image du petit bloc, pour éviter on select l'image sur firefox et IE
+function event_img_onload(e){
+	if(e == null){e = window.event}
+	this.s.img.style.display="block";
+	this.s.width			= this.s.img.offsetWidth;
+	this.s.height			= this.s.img.offsetHeight;
+	this.s.obj.style.width	= this.s.width+'px';
+	this.s.obj.style.height	= this.s.height+'px';
+	this.diverX				= parseInt(this.s.width-this.m.width);
+	this.diverY				= parseInt(this.s.height-this.m.height);
+	if(this.s.width){
+		this.s.obj.style.backgroundImage= "URL("+this.img_s+")";
+		this.s.img.style.display		="none";
+	}
+}
+
+//quand on click souris sur le bloc mobile
+function event_m_mousedown(e){
+	if(e == null){e = window.event}						//détecter si on sur IE ou pas
+	this._x	= e.clientX-parseInt(this.m.obj.style.left);
+	this._y	= e.clientY-parseInt(this.m.obj.style.top);
+	//calculer le point qu'on click sur navigateur
+	if(!e.target||e.target==this.m.obj){
+		this.ismove	= true;				//ouvrir l'interrupteur de déplacement
+	}
+	//éviter on selected l'image
+	document.body.focus();		
+	document.onselectstart	= function () { return false; }
+	e.target.ondragstart	= function() { return false; } 
+	return false; 
+}
+
+function event_m_mousemove(e){
+	if(e == null){e = window.event}
+	if(this.ismove){//si l'interrupteur de déplacement est ouvrir, on peut déplacer le bloc mobile
+		control_move(parseInt(e.clientX-this._x), parseInt(e.clientY-this._y), this);
+	}
+}
+
+function event_m_mouseup(e){
+	if(e == null){e = window.event}
+	this.ismove	= false;//fermer l'interrupteur de déplacement
+	if(this.auto){control_check(parseInt(e.clientX-this._x), parseInt(e.clientY-this._y), this);}
+	//automatiquement changer la côté
+	return false; 
+}
+--></pre>
+		<h3>le traitement de événement</h3>
+		<p>Quand on déplace le petit bloc, le fond d'image du grand bloc change aussi</p>
+<pre class="brush: javascript;">
+<!--
+function control_move(x,y,scope){
+	x	= (x>0)?(x<scope.diverX)?x:scope.diverX:0;
+	y	= (y>0)?(y<scope.diverY)?y:scope.diverY:0;
+	scope.m.obj.style.left	= x+'px';
+	scope.m.obj.style.top	= y+'px';
+	scope.b.obj.style.backgroundPosition = -x*scope.fois+'px '+(-y*scope.fois)+'px';
+}
+
+function control_check(x,y,scope){
+	if(scope.dd=="left"&&x<5||scope.dd=="right"&&x>scope.diverX-5){
+		scope.dd	= (scope.dd=="left")?"right":"left";
+		scope.s.obj.style.cssFloat		= scope.dd;
+		scope.s.obj.style.styleFloat	= scope.dd;
+	}
+}
+--></pre>
+
+
+	<h3>comment utilisé</h3>
+		<p>
+		Maintenant,la loupe est déjà marche, on prépare trois fichier
+		</p>
+		<ol>
+			<li>un fichier de javascript qui compose les code au-dessus</li>
+			<li>un fichier de css
+	<pre class="brush:css;">
+.loup_move{
+	background:#FFF;
+	border:0px solid #333;
+	cursor:move;
+	filter:alpha(opacity=50);
+	-moz-opacity:0.5;
+	opacity: 0.5;
+}
+</pre>	</li>
+			<li>un fichier de html
+<pre class="brush:html;"><!--
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+	<head>
+		<title>Demineur</title>
+		<meta http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="demineur/style.css" />
+		<script type='text/javascript' src="demineur.js"></script>
+		<script type="text/javascript">
+			var myLoupe	= new Loupe({
+				fois	: 10,
+				small	: "petit",
+				big		: "grand",
+				img_s	: "images/loupe/petit_10.jpg",
+				img_b	: "images/loupe/grand.jpg",
+				auto	: true
+			});
+		</script>
+	</head>	
+	<body>
+		<div id="grand" style="height:375px;width:800px">
+			<div id="petit" style="border:1px solid #fff"></div>
+		</div>
+	</body>
+</html>
+--></pre>
+
+	</li>
+		</ol>
+
+
+	<h3>Améliorer</h3>
+	<p>Vous pouvez voir <a href="loupe_demo.html">le exemple</a> ou <a href="download/loupe.zip" rel="external">télécharger</a> tous les code. Et puis on peut essayer utiliser prototype de objet écrire la loupe, click ici pour la <a href="download/loupe_prototype.zip" rel="external">télécharger</a></p>
+		</div>
+		</div>
+		<div id="foot">
+		<p>
+		<a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+		</p>
+		</div>
+	</div>
+</body>
+</html>

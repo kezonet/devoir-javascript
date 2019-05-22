@@ -1,0 +1,42 @@
+table{border-collapse:collapse}
+td{width:27px;height:28px;border:1px dotted #333;
+	background:#555 url("cache.png") no-repeat -1px -1px;}
+.bombe {
+	background:url("bombe.png");
+}
+.boum {
+	background:url("boum.png");
+}
+.erreur {
+	background:url("erreur.png");
+}
+.marque {
+	background:#555 url("marque.png") no-repeat -1px -1px;
+}
+.vide0 {
+	background:url("vide.png");
+}
+.vide1 {
+	background:url("un.png");
+}
+.vide2 {
+	background:url("deux.png");
+}
+.vide3 {
+	background:url("trois.png");
+}
+.vide4 {
+	background:url("quatre.png");
+}
+.vide5 {
+	background:url("cinq.png");
+}
+.vide6 {
+	background:url("six.png");
+}
+.vide7 {
+	background:url("sept.png");
+}
+.vide8 {
+	background:url("huit.png");
+}

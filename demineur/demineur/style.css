@@ -1,0 +1,48 @@
+table.demineur{
+	border-collapse:collapse
+}
+table.demineur td{
+	width:27px;
+	height:28px;
+	border:1px dotted #333;
+	background:#555 url("cache.png") no-repeat -1px -1px;
+}
+table.demineur td.bombe {
+	background:url("bombe.png");
+}
+table.demineur td.boum {
+	background:url("boum.png");
+}
+table.demineur td.erreur {
+	background:url("erreur.png");
+}
+table.demineur td.marque {
+	background:#555 url("marque.png") no-repeat -1px -1px;
+}
+table.demineur td.vide0 {
+	background:url("vide.png");
+}
+table.demineur td.vide1 {
+	background:url("un.png");
+}
+table.demineur td.vide2 {
+	background:url("deux.png");
+}
+table.demineur td.vide3 {
+	background:url("trois.png");
+}
+table.demineur td.vide4 {
+	background:url("quatre.png");
+}
+table.demineur td.vide5 {
+	background:url("cinq.png");
+}
+table.demineur td.vide6 {
+	background:url("six.png");
+}
+table.demineur td.vide7 {
+	background:url("sept.png");
+}
+table.demineur td.vide8 {
+	background:url("huit.png");
+}

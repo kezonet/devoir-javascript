@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+	<title>Projet de javascript - Dongyan ZOU</title>
+	<meta http-equiv="Content-Type" content="text/HTML; charset=UTF-8" />
+	<script type="text/javascript" src="js/external.js"></script>
+	<script type="text/javascript" src="js/shCore.js"></script>
+	<script type="text/javascript" src="js/shBrushJScript.js"></script>
+	<script type="text/javascript" src="js/demineur.js"></script>
+	<link rel="stylesheet" type="text/css" href="images/style.css" />
+	<link type="text/css" rel="stylesheet" href="images/shCore.css"/>
+	<link type="text/css" rel="stylesheet" href="images/shThemeDefault.css"/>
+	<link type="text/css" rel="stylesheet" href="images/demineur/style.css"/>
+	<script type="text/javascript">
+		SyntaxHighlighter.config.clipboardSwf = 'images/clipboard.swf';
+		SyntaxHighlighter.all();
+	</script>
+</head>
+<body>
+	<div id="main">
+		<div id="head">
+			<a href="#"><img src="images/logo.gif" alt="logo" title="logo"/></a>
+			<div id="menu">
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="demineur.html" class="click">Demineur</a></li>
+					<li><a href="loupe.html">Loupe</a></li>
+					<li><a href="contact.html">Contact</a></li>
+				</ul>
+				<div id="menu_tips">&nbsp;</div>
+			</div>
+		</div>
+		<div id="body">
+			<div id="tools" class="round">
+				<ul>
+					<li><a href="demineur_demon.html">Exemple</a></li>
+					<li><a href="index.html#tutorial">Tutorial</a></li>
+					<li><a href="download/demineur.zip" rel="external">télécharger</a></li>
+				</ul>
+			</div>
+			<div id="contenu">
+			<a href="demineur/index.html" rel="external">demineur(100x100)</a>
+			<h2>Exemple simple</h2>
+			<div id="myDemineur"></div>
+			<script type="text/javascript">
+			window.addEventListener("load",function(){
+				var myDemineur	= new Demineur({
+					renderto: document.getElementById("myDemineur"),
+					width	: 16,
+					height	: 8,
+					nombre	: 10,
+					onStart	: function(){int_startTime = new Date();alert("start")},
+					onWin	: function(time){alert("Win\n"+time)},
+					onFailed: function(time){alert("Failed\n"+time);setting({nombre:1},this);newGame(this)},
+					onClick	: function(open,marque,error,rest){}
+				});
+				newGame(myDemineur);
+			},false);
+			</script>
+			<pre class="brush: javascript;">
+			<!--
+			//<div id="myDemineur"></div>
+			var myDemineur	= new Demineur({
+				renderto: document.getElementById("myDemineur"),
+				width	: 16,
+				height	: 8,
+				nombre	: 10,
+				onStart	: function(){int_startTime = new Date();alert("start")},
+				onWin	: function(time){alert("Win\n"+time)},
+				onFailed: function(time){alert("Failed\n"+time);setting({nombre:1},this);newGame(this)},
+				onClick	: function(open,marque,error,rest){}
+			});
+			newGame(myDemineur);
+			-->
+			</pre>
+
+
+
+			<div id="myDemineur2"></div>
+			<script type="text/javascript">
+			window.addEventListener("load",function(){
+				var myDemineur2	= new Demineur({
+				renderto: document.getElementById("myDemineur2"),
+				width	: 10,
+				height	: 10,
+				nombre	: 20,
+				onWin	: function(time){alert("Win\n"+time)},
+				onFailed: function(time){alert("Failed\n"+time)}
+				});
+				newGame(myDemineur2);
+			},false);
+			</script>
+			<pre class="brush: javascript;">
+			<!--
+			//<div id="myDemineur2"></div>
+			var myDemineur2	= new Demineur({
+				renderto: document.getElementById("myDemineur2"),
+				width	: 10,
+				height	: 10,
+				nombre	: 20,
+				onWin	: function(time){alert("Win\n"+time)},
+				onFailed: function(time){alert("Failed\n"+time)}
+			});
+			newGame(myDemineur2);
+			-->
+			</pre>
+
+
+			<div id="parent_myDemineur3">
+				<input value="new" type="button" onclick="new3()"/>
+				<input value="0" type="text" disabled="disabled" id="time3"/>
+				<div id="myDemineur3"></div>
+			</div>
+			<script type="text/javascript">
+			window.addEventListener("load",function(){
+				myDemineur3	= new Demineur({
+				renderto: document.getElementById("myDemineur3"),
+				width	: 10,
+				height	: 10,
+				nombre	: 10,
+				onStart	: start3,
+				onWin	: win3,
+				onFailed: failed3
+				});
+				newGame(myDemineur3);
+			},false);
+			function new3(){
+				var time3obj=document.getElementById("time3");
+				time3obj.value=0;
+				newGame(myDemineur3);
+				try{clearInterval(timename)}catch(e){}
+			}
+			function start3(){
+				timename = setInterval("times3()",1000);
+			}
+			function win3(time){
+				clearInterval(timename);
+				alert("Win: "+time);
+			}
+			function failed3(time){
+				clearInterval(timename);
+				alert("Falied: "+time);
+			}
+			function times3(){
+				var time3obj=document.getElementById("time3");
+				time3obj.value++;
+			}
+			</script>
+			<pre class="brush: javascript;">
+			<!--
+			//<div id="parent_myDemineur3">
+			//	<input value="new" type="button" onclick="new3()"/>
+			//	<input value="0" type="text" disabled="disabled" id="time3"/>
+			//	<div id="myDemineur3"></div>
+			//</div>
+			window.addEventListener("load",function(){
+				myDemineur3	= new Demineur({
+				renderto: document.getElementById("myDemineur3"),
+				width	: 10,
+				height	: 10,
+				nombre	: 10,
+				onStart	: start3,
+				onWin	: win3,
+				onFailed: failed3
+				});
+				newGame(myDemineur3);
+			},false);
+			function new3(){
+				var time3obj=document.getElementById("time3");
+				time3obj.value=0;
+				newGame(myDemineur3);
+				try{clearInterval(timename)}catch(e){}
+			}
+			function start3(){
+				timename = setInterval("times3()",1000);
+			}
+			function win3(time){
+				clearInterval(timename);
+				alert("Win: "+time);
+			}
+			function failed3(time){
+				clearInterval(timename);
+				alert("Falied: "+time);
+			}
+			function times3(){
+				var time3obj=document.getElementById("time3");
+				time3obj.value++;
+			}
+			-->
+			</pre>
+		</div>
+		</div>
+		<div id="foot">
+		<p>
+		<a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
+		</p>
+		</div>
+	</div>
+</body>
+</html> 
